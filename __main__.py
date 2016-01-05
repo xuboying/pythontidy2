@@ -314,12 +314,12 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.getopt(sys.argv[1 : ], "ht:")
     except getopt.GetoptError:
-        sys.stdout.write('python -m pythontidy [-t expandtabsize] ')
+        sys.stdout.write('python -m pythontidy2 [-t expandtabsize] ')
         sys.exit(2)
 
     for opt, arg in opts:
         if opt == '-h':
-            sys.stdout.write('python -m pythontidy [-t expandtabsize] ')
+            sys.stdout.write('python -m pythontidy2 [-t expandtabsize] ')
             sys.exit()
         elif opt in("-t"):
             Tabsize = int(arg)
