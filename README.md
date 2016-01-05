@@ -1,4 +1,7 @@
 
+[![Travis](https://img.shields.io/badge/pypi-0.1-blue.svg)](https://pypi.python.org/pypi?:action=display&name=pythontidy2)[![PyPI](https://img.shields.io/pypi/l/Django.svg)]()
+
+
 # Usage
 
 `python -m pythontidy2 [-t expandtabsize] script.py `
