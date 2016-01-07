@@ -7,6 +7,10 @@ import warnings
 import fileinput
 import getopt
 
+try:
+    xrange
+except NameError:
+    xrange = range
 
 def GetUUID():
     UU = uuid.uuid1().__str__();
@@ -346,7 +350,7 @@ if __name__ == "__main__":
     #f.closed
     Text = chr(0x0a)
     for L in fileinput.input(args, mode = 'rb'):
-        Text = Text + L
+        Text = Text + L.decode("utf-8")
     Text    = Text.expandtabs(Tabsize)
     NewLine = "%s" % chr(0x0a)
     if re.search(r"%s%s" % (chr(0x0d), chr(0x0a)), Text):
