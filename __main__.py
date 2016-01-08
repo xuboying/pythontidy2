@@ -373,4 +373,5 @@ if __name__ == "__main__":
         if Text == Text1:
             break
     Text = Text[1 : ]
+    Text = Text.encode('utf8')
     sys.stdout.write(Text)
