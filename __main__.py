@@ -99,6 +99,7 @@ def DoPreParse(ExitChar, LeftSpace):
     global Text
     global Pos
     global NewLine
+    global Yin
     Line  = ""
     LfPos = 0
     while(Pos + 1 < len(Text)):
@@ -161,6 +162,7 @@ class Namespace:
 def DoParse(ExitChar):
     global Text
     global Pos
+    global Yin
     ns        = Namespace()
     Line      = ""
     Line2     = ""
@@ -209,7 +211,11 @@ def DoParse(ExitChar):
                 i = re.sub(r"[\t ]*%s[\t ]*" % k, " %s " % Protect[k], i)
                 #i = re.sub(r"%s" % k, Protect[k], i)
             Z = []
-            Z = re.split(r"([:=])", i)
+
+            if Yin:
+                Z = [i]
+            else:
+                Z = re.split(r"([:=])", i)
             for i in xrange(len(Z)):
                 Z[i] = re.sub(RUUID, GetG, Z[i])
             for m in Z:
@@ -313,10 +319,12 @@ if __name__ == "__main__":
     global Pos
     global RUUID
     global NewLine
+    global Yin
 
+    Yin     = 0
     Tabsize = 4
     try:
-        opts, args = getopt.getopt(sys.argv[1 : ], "ht:")
+        opts, args = getopt.getopt(sys.argv[1 : ], "ht:Y")
     except getopt.GetoptError:
         sys.stdout.write('python -m pythontidy2 [-t expandtabsize] ')
         sys.exit(2)
@@ -325,8 +333,10 @@ if __name__ == "__main__":
         if opt == '-h':
             sys.stdout.write('python -m pythontidy2 [-t expandtabsize] ')
             sys.exit()
-        elif opt in("-t"):
+        if opt in("-t"):
             Tabsize = int(arg)
+        if opt in("-Y"):
+            Yin = 1
 
     if sys.platform == "win32":
         import os, msvcrt
@@ -341,9 +351,6 @@ if __name__ == "__main__":
     for x in RProtect.keys():
         Protect[re.escape(RProtect[x])] = x
 
-
-
-
     RUUID = r"\$(\w{8}_\w{4}_\w{4}_\w{4}_\w{12})\$"
     #with open(argv[1], 'r') as f:
     #    Text = f.read()
@@ -355,23 +362,30 @@ if __name__ == "__main__":
     NewLine = "%s" % chr(0x0a)
     if re.search(r"%s%s" % (chr(0x0d), chr(0x0a)), Text):
         NewLine = "%s%s" % (chr(0x0d), chr(0x0a))
-    while(True):
-        g    = {}
-        Pos  = - 1
-        Text = DoPreParse("", 0)
-        Text = re.sub(RUUID, GetG, Text)
+    if Yin:
         g    = {}
         Pos  = - 1
         Text = DoParse('')
         for k in RProtect.keys():
             Text = re.sub(r"%s" % k, RProtect[k], Text)
-        Text1 = Text
-        g     = {}
-        Pos   = - 1
-        Text  = DoPreParse("", 0)
-        Text  = re.sub(RUUID, GetG, Text)
-        if Text == Text1:
-            break
+    else:
+        while(True):
+            g    = {}
+            Pos  = - 1
+            Text = DoPreParse("", 0)
+            Text = re.sub(RUUID, GetG, Text)
+            g    = {}
+            Pos  = - 1
+            Text = DoParse('')
+            for k in RProtect.keys():
+                Text = re.sub(r"%s" % k, RProtect[k], Text)
+            Text1 = Text
+            g     = {}
+            Pos   = - 1
+            Text  = DoPreParse("", 0)
+            Text  = re.sub(RUUID, GetG, Text)
+            if Text == Text1:
+                break
     Text = Text[1 : ]
     Text = Text.encode('utf8')
     sys.stdout.write(Text)
