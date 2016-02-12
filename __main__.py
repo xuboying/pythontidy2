@@ -346,7 +346,7 @@ if __name__ == "__main__":
     Protect  = {}
     RProtect = {}
     g        = {}
-    for x in["==", "<=", ">=", "+=", "-=", "*=", "/=", "%=", "->", "!=", "**"]:
+    for x in["==", "<=", ">=", "+=", "-=", "*=", "/=", "%=", "->", "!=", "**", ">>", "<<"]:
         RProtect[GetUUID()] = x
     for x in RProtect.keys():
         Protect[re.escape(RProtect[x])] = x
