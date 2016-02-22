@@ -93,9 +93,9 @@ fun DoTidyPython()
     :TidyPython
     exe "goto " . Pos
 endfun
-au Filetype python nmap <F7> :call DoTidyPython()<CR>
-au Filetype python imap <F7> <ESC>:call DoTidyPython()<CR>
-au Filetype python vmap <F7> :TidyPython<CR>
+au Filetype python nmap <buffer> <F7> :call DoTidyPython()<CR>
+au Filetype python imap <buffer> <F7> <ESC>:call DoTidyPython()<CR>
+au Filetype python vmap <buffer> <F7> :TidyPython<CR>
 ```
 
 ## License
